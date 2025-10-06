@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tax Calculator Online</title>
+    <style>
+        body {
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.125);
+            margin: 0;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        #calculatorBody {
+            background-color: rgba(255, 255, 255, 0.75);
+            border-radius: 10px;
+            padding: 20px;
+            flex: 1;
+            min-width: 300px;
+            height: 80vh;
+        }
+
+        #calculatorBody input {
+            margin: 10px;
+            font-size: 20px;
+            font-family: monospace;
+            height: 50px;
+            width: 80%;
+            border-radius: 10px;
+            background-color: rgba(255, 255, 255, 0.75);
+        }
+
+        #calculatorBody h1 {
+            padding: 25px;
+        }
+
+        #calculatorBody p {
+            padding: 10px;
+        }
+
+        #calculatorBody button {
+            font-size: 15px;
+            font-family: monospace;
+            height: 25px;
+            width: 50%;
+            border-radius: 10px;
+            background-color: rgba(255, 255, 255, 0.75);
+            margin-top: 20px;
+        }
+
+        #outputField {
+            background-color: rgba(255, 255, 255, 0.75);
+            border-radius: 10px;
+            padding: 20px;
+            flex: 1;
+            min-width: 200px;
+            position: relative;
+            height: 80vh;
+        }
+
+        #outputField textarea {
+            position: absolute;
+            top: 10%;
+            left: 9%;
+            height: 80%;
+            width: 80%;
+            border-radius: 10px;
+            z-index: 1;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                flex-direction: column;
+                height: auto;
+                overflow-y: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div id='calculatorBody'>
+            <h1>placeholder</h1>
+            <p>placeholderplaceholder</p>
+            <input type="number" placeholder="initial cost: ($)" min="0" id='costInput'>
+            <input type="number" placeholder="tax: (%)" min="0" id='taxInput'>
+            <button id='calculateButton'>print</button>
+        </div>
+        <div id='outputField'>
+            <textarea id='output' readonly></textarea>
+        </div>
+    </div>
+    <script>
+        const output = document.getElementById('output');
+        const calculateButton = document.getElementById('calculateButton');
+        const costInput = document.getElementById('costInput');
+        const taxInput = document.getElementById('taxInput');
+
+
+        function calculateTax() {
+            let init = costInput.value;
+            let tax = taxInput.value;
+            let result = init * (tax / 100);
+            let total = parseInt(init) + parseInt(result);
+            let printState = 0;
+            output.textContent += `cost: ${round(init)}\$\ntax: ${round(tax)}%\n\n`;
+            let int = setInterval(() => {
+                printState++
+                if (printState === 1) {
+                    output.textContent += `${round(tax)}% = ${round(tax/100)}\n`;
+                }
+                if (printState === 2) {
+                    output.textContent += `${round(init)}\$ x ${round(tax/100)} = ${round(result)}\$\n`;
+                }
+                if (printState === 3) {
+                    output.textContent += `${round(init)}\$ + ${round(result)}\$ = ${round(total)}\$`;
+                }
+                if (printState === 4) {
+                    output.textContent += '\n\n\n'
+                }
+                if (printState === 5) {
+                    clearInterval(int);
+                }
+            }, 250);
+        }
+
+        function round(n) {
+            return (Math.round(n * 1000)) / 1000;
+        }
+
+
+
+        function calculateButtonClicked() {
+            if (costInput.value === '') {
+                return
+            }
+            if (taxInput.value === '') {
+                return
+            }
+            calculateTax();
+        }
+
+        calculateButton.addEventListener('click', calculateButtonClicked);
+    </script>
+</body>
+
+</html>

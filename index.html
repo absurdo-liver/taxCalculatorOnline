@@ -109,9 +109,11 @@
         const calculateButton = document.getElementById('calculateButton');
         const costInput = document.getElementById('costInput');
         const taxInput = document.getElementById('taxInput');
-
+        var isRunning = false;
 
         function calculateTax() {
+            if(isRunning){return}
+            isRunning = true;
             let init = costInput.value;
             let tax = taxInput.value;
             let result = init * (tax / 100);
@@ -133,6 +135,7 @@
                     output.textContent += '\n\n\n'
                 }
                 if (printState === 5) {
+                    isRunning = false;
                     clearInterval(int);
                 }
             }, 250);
